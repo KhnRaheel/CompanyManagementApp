@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Windows.Forms;
+using System.IO;
+
 
 namespace CompanyManagementApp
 {
@@ -55,8 +56,8 @@ namespace CompanyManagementApp
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(@"
-                    INSERT INTO Employees (CompanyID, Name, Designation, DateOfJoining, Department)
-                    VALUES (@cid, @n, @d, @j, 'Finance')", conn);
+                    INSERT INTO Employees (CompanyID, Name, Designation, DateOfJoining)
+                    VALUES (@cid, @n, @d, @j)", conn);
 
                 cmd.Parameters.AddWithValue("@cid", Session.CompanyID);
                 cmd.Parameters.AddWithValue("@n", txtName.Text);
@@ -74,15 +75,23 @@ namespace CompanyManagementApp
 
         private void btnViewEmployees_Click(object sender, EventArgs e)
         {
+            string reportPath = Path.Combine(Application.StartupPath, "EmployeeReport.rpt");
+
+            if (!File.Exists(reportPath))
+            {
+                MessageBox.Show("Report file not found:\n" + reportPath);
+                return;
+            }
+
             ReportDocument rpt = new ReportDocument();
-            rpt.Load("EmployeeReport.rpt");
+            rpt.Load(reportPath); 
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(@"
-                    SELECT Name, Designation, DateOfJoining
-                    FROM Employees
-                    WHERE CompanyID = @cid AND Department = 'Finance'", conn);
+            SELECT Name, Designation, DateOfJoining
+            FROM Employees
+            WHERE CompanyID = @cid ", conn);
 
                 da.SelectCommand.Parameters.AddWithValue("@cid", Session.CompanyID);
 
@@ -91,20 +100,15 @@ namespace CompanyManagementApp
 
                 rpt.SetDataSource(ds.Tables["Employees"]);
 
-                CrystalReportViewer viewer = new CrystalReportViewer
-                {
-                    ReportSource = rpt,
-                    Dock = DockStyle.Fill
-                };
-
-                Form reportForm = new Form
-                {
-                    Text = "Employee Report - Finance Department",
-                    WindowState = FormWindowState.Maximized
-                };
-                reportForm.Controls.Add(viewer);
-                reportForm.Show();
+                // Set the existing CrystalReportViewer's source
+                crystalReportViewer1.ReportSource = rpt;
+                crystalReportViewer1.Refresh();
             }
+        }
+
+        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
