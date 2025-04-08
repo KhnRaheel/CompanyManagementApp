@@ -14,13 +14,13 @@ This is a .NET-based ERP application that allows users to log in and manage diff
 ## Screenshots
 
 ### Login Page
-![Login Page](Assets/LOG IN.jpg)
+![Login Page](CompnyManagmentApp/Assets/LOG IN.jpg)
 
 ### Dashboard
-![Dashboard](Assets/Dashboard.jpg)
+![Dashboard](CompnyManagmentAppAssets/Dashboard.jpg)
 
 ### Finance Module
-![Finance Module](Assets/Finance.jpg)
+![Finance Module](CompnyManagmentAppAssets/Finance.jpg)
 
 ### Add New Employee
 ![Add New Employee](path/to/your/add-new-employee-image.png)
