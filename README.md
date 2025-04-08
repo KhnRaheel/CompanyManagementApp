@@ -14,7 +14,7 @@ This is a .NET-based ERP application that allows users to log in and manage diff
 ## Screenshots
 
 ### Login Page
-![Login Page](CompnyManagmentApp/Assets/LOG IN.jpg)
+![Login Page](CompanyManagementApp/Assets/LOG IN.jpg)
 
 ### Dashboard
 ![Dashboard](CompnyManagmentAppAssets/Dashboard.jpg)
